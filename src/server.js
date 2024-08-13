@@ -1,14 +1,10 @@
-/**
- * The core server that runs on a Cloudflare worker.
- */
-
 import { AutoRouter } from 'itty-router';
 import {
   InteractionResponseType,
   InteractionType,
   verifyKey,
 } from 'discord-interactions';
-import { AWW_COMMAND, INVITE_COMMAND } from './commands.js';
+import { SPOTTED_COMMAND } from './commands.js';
 import { getCuteUrl } from './reddit.js';
 import { InteractionResponseFlags } from 'discord-interactions';
 
@@ -58,7 +54,7 @@ router.post('/', async (request, env) => {
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
     // Most user commands will come as `APPLICATION_COMMAND`.
     switch (interaction.data.name.toLowerCase()) {
-      case AWW_COMMAND.name.toLowerCase(): {
+      case SPOTTED_COMMAND.name.toLowerCase(): {
         const cuteUrl = await getCuteUrl();
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
