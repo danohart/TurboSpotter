@@ -1,4 +1,5 @@
 import { AutoRouter } from 'itty-router';
+import mongoose from 'mongoose';
 import {
   InteractionResponseType,
   InteractionType,
@@ -6,7 +7,6 @@ import {
 } from 'discord-interactions';
 import { SPOTTED_COMMAND } from './commands.js';
 import { getCuteUrl } from './reddit.js';
-import { InteractionResponseFlags } from 'discord-interactions';
 
 class JsonResponse extends Response {
   constructor(body, init) {
@@ -59,18 +59,7 @@ router.post('/', async (request, env) => {
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: cuteUrl,
-          },
-        });
-      }
-      case INVITE_COMMAND.name.toLowerCase(): {
-        const applicationId = env.DISCORD_APPLICATION_ID;
-        const INVITE_URL = `https://discord.com/oauth2/authorize?client_id=${applicationId}&scope=applications.commands`;
-        return new JsonResponse({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: INVITE_URL,
-            flags: InteractionResponseFlags.EPHEMERAL,
+            content: `Looks like <@${interaction.member.user.id}> spotted ${interaction.data.options[0].value}`,
           },
         });
       }
