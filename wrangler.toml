@@ -6,3 +6,10 @@ compatibility_date="2024-08-10"
 # DISCORD_TOKEN
 # DISCORD_PUBLIC_KEY
 # DISCORD_APPLICATION_ID
+
+[vars]
+ATLAS_APPID = "application-0-zdtzqku"
+
+[[kv_namespaces]]
+binding = "SPOTTED_COUNT"
+id = "e36f74de240d4a329322bd13d452d291"

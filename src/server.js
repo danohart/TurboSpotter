@@ -1,12 +1,11 @@
 import { AutoRouter } from 'itty-router';
-import mongoose from 'mongoose';
 import {
   InteractionResponseType,
   InteractionType,
   verifyKey,
 } from 'discord-interactions';
+import updateUserScore from './updateScore.js';
 import { SPOTTED_COMMAND } from './commands.js';
-import { getCuteUrl } from './reddit.js';
 
 class JsonResponse extends Response {
   constructor(body, init) {
@@ -52,19 +51,17 @@ router.post('/', async (request, env) => {
   }
 
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-    // Most user commands will come as `APPLICATION_COMMAND`.
     switch (interaction.data.name.toLowerCase()) {
       case SPOTTED_COMMAND.name.toLowerCase(): {
-        const cuteUrl = await getCuteUrl();
+        const score = await updateUserScore(interaction, env);
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: `Looks like <@${interaction.member.user.id}> spotted ${interaction.data.options[0].value}`,
-          },
+          data: { content: score },
         });
       }
       default:
-        return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
+        console.error('Unknown command:', interaction.data.name);
+        return new JsonResponse({ error: 'Unknown command' }, { status: 400 });
     }
   }
 
