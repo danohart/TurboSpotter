@@ -5,7 +5,8 @@ import {
   verifyKey,
 } from 'discord-interactions';
 import updateUserScore from './updateScore.js';
-import { SPOTTED_COMMAND } from './commands.js';
+import getLeaderboard from './getLeaderboard.js';
+import { SPOTTED_COMMAND, SPOT_LEADERBOARD } from './commands.js';
 
 class JsonResponse extends Response {
   constructor(body, init) {
@@ -57,6 +58,13 @@ router.post('/', async (request, env) => {
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: { content: score },
+        });
+      }
+      case SPOT_LEADERBOARD.name.toLowerCase(): {
+        const leaderboard = await getLeaderboard(interaction, env);
+        return new JsonResponse({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: { content: leaderboard },
         });
       }
       default:

@@ -10,3 +10,10 @@ export const SPOTTED_COMMAND = {
     },
   ],
 };
+
+export const SPOT_LEADERBOARD = {
+  name: 'leaderboard',
+  description:
+    'Leaderboard stats totals for everyone participating in Turbo Spotting.',
+  type: 1,
+};
